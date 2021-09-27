@@ -18,7 +18,7 @@ from selenium import webdriver
 from uestcedu.auto_job import job_auto_start
 from uestcedu.auto_video import video_auto_start
 
-chrome_path = "E:\Code\VerificationCode\chromedriver.exe"
+chrome_path = '../chromedriver.exe'
 driver = webdriver.Chrome(chrome_path)
 
 
@@ -196,10 +196,10 @@ class Params:
     P_COURSE = 'COURSE'
 
 
-def start(type):
-    if type == Params.P_JOB:
+def start(pro_type):
+    if pro_type == Params.P_JOB:
         start_job()
-    elif type == Params.P_COURSE:
+    elif pro_type == Params.P_COURSE:
         start_course()
     else:
-        print(f'类型值错误（预期：{Params.P_JOB}or{Params.P_COURSE}，实际：{type}）')
+        print(f'类型值错误（预期：{Params.P_JOB}or{Params.P_COURSE}，实际：{pro_type}）')

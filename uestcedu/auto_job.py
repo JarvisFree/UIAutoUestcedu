@@ -24,7 +24,7 @@ def job_auto_start(driver_job: WebDriver, course_name):
         return True if '作业提交1' in driver_job.page_source else False
 
     if check_job():
-        jobs = ['作业提交1']  # '作业提交1', '作业提交2', , '作业提交2', '作业提交3'
+        jobs = ['作业提交1', '作业提交2', '作业提交3']  # '作业提交1', '作业提交2', , '作业提交2', '作业提交3'
         print(f'校验成功，此课程含有作业(课程：{course_name})')
         for i in jobs:  # 循环操作3个作业
             driver_job.switch_to.window(driver_job.window_handles[1])  # 切换到第二个标签页
@@ -112,7 +112,7 @@ def answer_look(driver_job: WebDriver, course_name, job_name):
     :param driver_job:
     :param course_name:
     :param job_name: 当前作业名称
-    :return: [{'title':'','answer':['A','B']},{},...,{}]
+    :return: [{'title':'','true_answer':['A','B'],answer_list:[]}]
     """
     # 点击交卷前 在新标签页中打开当前网址 并进入对应作业考试页面
     current_url = driver_job.current_url
@@ -251,7 +251,20 @@ def answer_look(driver_job: WebDriver, course_name, job_name):
 
     print(f'\n{"=" * 15}【题目数据】{course_name}->{job_name} {"=" * 15}')
     print(*title_answer_list, sep='\n')
+
     # TODO:还没有做保存
+    with open('data.txt', 'a', encoding='utf-8') as f:
+        index = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N']
+        for t in title_answer_list:
+            answers = ''
+            count = 0
+            for i in t["answer_list"]:
+                answers += index[count] + '、' + i + '\n'
+                count += 1
+            f.write(
+                f'\n【科目：{course_name} -> {job_name}】{t["title"]}\n{answers}正确答案：{t["true_answer"]}\n'
+            )
+
     # step5 返回题目与正确答案
     return title_answer_list
 
@@ -314,7 +327,7 @@ def answer_write(driver_job: WebDriver, course_name, title_answer_list, job_name
     operation_jobs = []
     print('Look up by serial number') if by_index else print('Search through the answer text')
 
-    input('>>>:')
+    # input('>>>:')
     time.sleep(6)
 
     for i in jobs:  # 依次循环做每道题
